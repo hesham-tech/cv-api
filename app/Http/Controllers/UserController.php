@@ -41,7 +41,7 @@ class UserController extends Controller
 
             $validatedData = $request->validated();
             if (isset($validatedData['theme'])) {
-                $validatedData['theme'] = json_encode($validatedData['theme']);
+                $validatedData['theme'] = json_encode($validatedData['theme'], JSON_FORCE_OBJECT);
             }
 
             $items->update($validatedData);
@@ -83,7 +83,8 @@ class UserController extends Controller
             $user = User::findOrFail($id);
 
             if ($request->has('theme')) {
-                $user->theme = json_encode($request->input('theme'));
+                // استخدام JSON_FORCE_OBJECT لضمان حفظ {} بدلاً من [] عند الفراغ
+                $user->theme = json_encode($request->input('theme'), JSON_FORCE_OBJECT);
                 $user->save();
             }
 
